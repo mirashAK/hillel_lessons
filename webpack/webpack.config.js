@@ -3,7 +3,7 @@ const path = require("path");
 
 module.exports = {
     mode: 'development',
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
     devServer: {
         hot: true,
     },
@@ -11,7 +11,9 @@ module.exports = {
         index: path.resolve(__dirname, "src", "main.ts") 
     },
     output: {
-        path: path.resolve(__dirname, "dist")
+        filename: '[name].[contenthash].js',
+        path: path.resolve(__dirname, "dist"),
+        clean: true,
     },
     module: {
         rules: [
