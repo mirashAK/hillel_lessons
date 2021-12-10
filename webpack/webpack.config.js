@@ -8,7 +8,7 @@ module.exports = {
         hot: true,
     },
     entry: {
-        index: path.resolve(__dirname, "src", "main.js") 
+        index: path.resolve(__dirname, "src", "main.ts") 
     },
     output: {
         path: path.resolve(__dirname, "dist")
@@ -18,8 +18,16 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: ["style-loader", "css-loader"]
-            }
+            },
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
         ]
+    },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js'],
     },
     plugins: [
         new HtmlWebpackPlugin({
