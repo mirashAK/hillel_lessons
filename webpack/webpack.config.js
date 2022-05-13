@@ -3,7 +3,7 @@ const path = require("path");
 
 module.exports = {
     mode: 'development',
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
     devServer: {
         hot: true,
     },
@@ -11,10 +11,21 @@ module.exports = {
         index: path.resolve(__dirname, "src", "main.js") 
     },
     output: {
-        path: path.resolve(__dirname, "dist")
+        filename: '[name].[contenthash].js',
+        path: path.resolve(__dirname, 'dist'),
+        clean: true,
     },
     module: {
         rules: [
+            {
+                test: /\.less$/i,
+                use: [
+                    // compiles Less to CSS
+                    "style-loader",
+                    "css-loader",
+                    "less-loader",
+                ],
+            },
             {
                 test: /\.css$/,
                 use: ["style-loader", "css-loader"]
@@ -23,7 +34,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, "src", "index.html")
+            template: path.resolve(__dirname, "src", "index.html")
         })
     ]
 };
