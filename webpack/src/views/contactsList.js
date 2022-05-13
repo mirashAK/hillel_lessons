@@ -7,7 +7,7 @@ const defaults = {
 const template = 
     `<ul>
         {{#contacts}}
-            <li>{{name}}</li>
+            <li>{{profile}}->{{name}}</li>
         {{/contacts}}
     </ul>`;
 
