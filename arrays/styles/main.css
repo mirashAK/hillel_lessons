@@ -1,0 +1,29 @@
+.myHeaderHolder .myHeaderInside {
+    color: green;
+}
+
+.myHeaderInside {
+    color: red;
+    text-align: right;
+    font-weight: bold;
+}
+
+h2[data-my-data-tag] {
+    color: red;
+    text-align: center;
+}
+
+.myHeader.myNo.myThird {
+    color: green;
+    text-align: center;
+}
+
+#headerId .myHeader {
+    color: blue;
+    text-align: right;
+}
+
+[data-my-data-tag] {
+    color: purple;
+    text-align: center;
+}
