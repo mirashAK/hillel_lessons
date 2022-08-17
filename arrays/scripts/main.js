@@ -13,13 +13,19 @@ const init = function(){
     const arrayJElement = document.getElementById('array_j');
     
     const plainTemplate = document.getElementById('plain_array');
+    const modifiedTemplate = document.getElementById('modified_array');
+    
+    const sortButton = document.getElementById('sort_button');
+    
+    
+    baseArray = [];
     
     const createArray = function(iDim = 0, jDim = 0) {
         let resultArray = [];
         for (let i=0; i<iDim; i++) {
             if (jDim > 0) {
                 let subArray = [];
-                for (let j=0; j<jDim; j++) {
+                for (let j=0; j<getRandomIntInclusive(1, jDim); j++) {
                     subArray.push(getRandomIntInclusive(MIN_RAND, MAX_RAND));
                 }
                 resultArray.push(subArray);
@@ -34,11 +40,11 @@ const init = function(){
         const iDim = 1*arrayIElement.value;
         const jDim = 1*arrayJElement.value;
         
-        const firstArray = createArray(iDim, jDim);
+        baseArray = createArray(iDim, jDim);
         
-        renderTemplate(plainTemplate, firstArray);
+        renderTemplate(plainTemplate, baseArray);
         
-        console.table( firstArray );
+        console.table( baseArray );
     }
     createButton.addEventListener('click', createButtonClick);
     
@@ -84,13 +90,29 @@ const init = function(){
             tdEl += '</tr>';
         })
         
-        let rows = thRow + '</tr>'  + tdRow.join('');
-
+        const rows = thRow + '</tr>'  + tdRow.join('');
         
         const table = `<table class="results">${rows}</table>`;
         
         tmplEl.innerHTML = table;
     }
+    
+    const sortButtonClick = function(ev) {
+        if (baseArray.length > 0) {
+            const compare = function (a, b) {
+                if (a < b) {
+                    return -1;
+                }
+                if (a > b) {
+                    return 1;
+                }
+                return 0;
+            }
+            const sortedArray = [...baseArray].sort(compare);
+            renderTemplate(modifiedTemplate, sortedArray);
+        }
+    }
+    sortButton.addEventListener('click', sortButtonClick);
 }
 
 if (document.readyState === 'loading') {  // Загрузка ещё не закончилась
