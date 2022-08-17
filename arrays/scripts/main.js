@@ -16,7 +16,7 @@ const init = function(){
     const modifiedTemplate = document.getElementById('modified_array');
     
     const sortButton = document.getElementById('sort_button');
-    
+    const updButton = document.getElementById('update_button');
     
     baseArray = [];
     
@@ -44,7 +44,7 @@ const init = function(){
         
         renderTemplate(plainTemplate, baseArray);
         
-        console.table( baseArray );
+        //console.table( baseArray );
     }
     createButton.addEventListener('click', createButtonClick);
     
@@ -108,11 +108,70 @@ const init = function(){
                 }
                 return 0;
             }
-            const sortedArray = [...baseArray].sort(compare);
+            let sortedArray = [...baseArray];
+            if (Array.isArray(sortedArray[0])) {
+                sortedArray.forEach((el, elIdx)=>{
+                    if (Array.isArray(el)) el.sort(compare);
+                })
+            } else {
+                sortedArray.sort(compare);
+            }
             renderTemplate(modifiedTemplate, sortedArray);
         }
     }
     sortButton.addEventListener('click', sortButtonClick);
+    
+    const updButtonClick = function(ev) {
+        let updArray = [...baseArray];
+         
+        updArray = updArray.filter((el)=>{
+            return el > 100;
+        })
+        
+        console.table(updArray);
+        
+        let result = updArray.every((el)=>{
+            return el > 200;
+        })
+        
+        console.log(`updArray.every: `, result);
+
+        // as Array.filter()
+        // acc == previousValue
+        // curr == currentValue
+        result = updArray.reduce((acc, curr, currIdx)=>{
+            console.log(acc, curr, currIdx);
+            //debugger;
+            if (curr > 100) {
+                acc.push(curr);
+            }
+            return acc;
+        }, []);
+        
+        console.log(`result: `, result);
+        renderTemplate(modifiedTemplate, result);
+        
+        // Sum of al elements
+        result = updArray.reduce((acc, curr, currIdx)=>{
+            console.log(acc, curr, currIdx);
+            //debugger;
+            return acc + curr;
+        }, 0);
+        
+        console.log(`result: `, result);
+        
+        // as Array.some()
+        result = updArray.reduce((acc, curr, currIdx)=>{
+            console.log(acc, curr, currIdx);
+            //debugger;
+            return acc ? acc :  curr < 100;
+        }, false);
+        
+        console.log(`result: `, result);
+        
+    }
+    
+    updButton.addEventListener('click', updButtonClick);
 }
 
 if (document.readyState === 'loading') {  // Загрузка ещё не закончилась
