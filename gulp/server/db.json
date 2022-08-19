@@ -1,0 +1,39 @@
+{
+  "contacts": [
+    {
+      "id": 1,
+      "name": "AAA",
+      "phone": ""
+    },
+    {
+      "id": 2,
+      "name": "BBB",
+      "phone": ""
+    },
+    {
+      "id": 3,
+      "name": "CCC",
+      "phone": ""
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    },
+    {
+      "id": "2",
+      "postId": "1",
+      "body": "new comment"
+    },
+    {
+      "id": "3",
+      "postId": "1",
+      "body": "new comment 111"
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
