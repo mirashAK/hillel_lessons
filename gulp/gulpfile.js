@@ -24,6 +24,10 @@ function generateVendor() {
   return src('./vendor/*.js')
     .pipe(dest(buildPath+'/js'));
 }
+function copyFavicon() {
+  return src('./src/assets/favicon.ico')
+    .pipe(dest(buildPath));
+}
 
 function generateHTML() {
     return src("./src/index.ejs")
@@ -47,7 +51,7 @@ function generateCSS() {
         .pipe(sync.stream());
 }
 
-exports.build = series(generateJS, generateVendor, generateCSS, generateHTML);
+exports.build = series(copyFavicon, generateJS, generateVendor, generateCSS, generateHTML);
 
 function watchFiles() {
     watch('./src/index.ejs', generateHTML);
@@ -69,6 +73,7 @@ function browserServeSync(cb) {
         }
     });
 
+    copyFavicon();
     watch('./src/index.ejs', generateHTML);
     watch('./src/css/*.less', generateCSS);
     watch('./src/css/*.css', generateCSS);
