@@ -1,2 +1,12 @@
+logs
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+
 node_modules
 dist
+build
