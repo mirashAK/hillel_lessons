@@ -175,7 +175,7 @@ const init = function(){
     
     
     const proto = [1,2,3,3,2,1].reduce((acc, curr, idx)=>{
-        console.log(`reduce: `, acc, curr, idx);
+        //console.log(`reduce: `, acc, curr, idx);
         if (curr > 2) acc.push(idx)
         return acc;
     }, [])
@@ -186,7 +186,6 @@ const init = function(){
         let result = initVal;
         const array = this;
         
-        console.log(`implReduce`);
         for (let i = 0; i < array.length; i++) {
             result = callback(result, array[i], i);
         }
@@ -197,13 +196,56 @@ const init = function(){
     Array.prototype.myReduce = implReduce;
     
     const test = [1,2,3,3,2,1].myReduce((acc, curr, idx)=>{
-        console.log(`myReduce: `, acc, curr, idx);
+        //console.log(`myReduce: `, acc, curr, idx);
         if (curr > 2) acc.push(idx)
         return acc;
     }, []);
     
     console.log(`test: `, test );
     
+    
+    
+    const compare = function (a, b) {
+        if (a < b) {
+            return -1;
+        }
+        if (a > b) {
+            return 1;
+        }
+        return 0;
+    }
+    
+    const sort = [1,2,3,3,2,1].sort(compare);
+    
+    console.log(`sort: `, sort );
+    
+    function implSort (callback) {
+        const array = [...this];
+        
+        //Outer pass
+        for(let i = 0; i < array.length; i++){
+
+            //Inner pass
+            for(let j = 0; j < array.length - i - 1; j++){
+
+                //Value comparison using ascending order
+                if(callback(array[j + 1], array[j]) == -1){ // array[j] > array[j + 1] 
+                    //Swapping
+                    //[array[j + 1],array[j]] = [array[j],array[j + 1]]
+                    const tmp = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = tmp;
+                }
+            }
+        };
+        
+        return array;
+    }
+    
+    Array.prototype.mySort = implSort;
+    
+    const mySort = [1,2,3,3,2,1].mySort(compare);
+    console.log(`mySort: `, mySort );
 }
 
 if (document.readyState === 'loading') {  // Загрузка ещё не закончилась
