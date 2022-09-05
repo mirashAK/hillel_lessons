@@ -1,3 +1,5 @@
+'use strict'
+
 const MIN_RAND = 0;
 const MAX_RAND = 1000;
 
@@ -18,7 +20,7 @@ const init = function(){
     const sortButton = document.getElementById('sort_button');
     const updButton = document.getElementById('update_button');
     
-    baseArray = [];
+    const baseArray = [];
     
     const createArray = function(iDim = 0, jDim = 0) {
         let resultArray = [];
