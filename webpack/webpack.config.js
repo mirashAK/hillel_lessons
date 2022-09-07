@@ -12,11 +12,20 @@ module.exports = {
     },
     output: {
         filename: '[name].[contenthash].js',
-        path: path.resolve(__dirname, "dist"),
+        path: path.resolve(__dirname, 'dist'),
         clean: true,
     },
     module: {
         rules: [
+            {
+                test: /\.less$/i,
+                use: [
+                    // compiles Less to CSS
+                    "style-loader",
+                    "css-loader",
+                    "less-loader",
+                ],
+            },
             {
                 test: /\.css$/,
                 use: ["style-loader", "css-loader"]
@@ -33,7 +42,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, "src", "index.html")
+            template: path.resolve(__dirname, "src", "index.html")
         })
     ]
 };

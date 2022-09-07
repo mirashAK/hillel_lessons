@@ -9,3 +9,5 @@ npm i html-webpack-plugin --save-dev
 npm i css-loader style-loader --save-dev
 
 npm install --save-dev typescript ts-loader
+
+npm install less less-loader --save-dev

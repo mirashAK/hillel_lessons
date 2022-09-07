@@ -1,0 +1,11 @@
+{
+  "contacts": [
+    { "id": 1, "name": "AAA", "phone": "" },
+    { "id": 2, "name": "BBB", "phone": "" },
+    { "id": 3, "name": "CCC", "phone": "" }
+  ],
+  "comments": [
+    { "id": 1, "body": "some comment", "postId": 1 }
+  ],
+  "profile": { "name": "typicode" }
+}
