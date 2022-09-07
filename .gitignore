@@ -10,3 +10,4 @@ pids
 node_modules
 dist
 build
+gulp/build/*
