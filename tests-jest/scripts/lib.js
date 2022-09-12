@@ -4,8 +4,15 @@ const sum = function (a, b) {
   return a + b;
 }
 
+const mult = function (a, b) {
+  return a * b;
+}
+
 try {
-    module.exports = { sum };
+    module.exports = { 
+        sum,
+        mult 
+    };
 } catch(e) {
     
 }
