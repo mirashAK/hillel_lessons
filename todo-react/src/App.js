@@ -12,11 +12,11 @@ import { Trash } from 'react-bootstrap-icons';
 function App() {
     
     class Task {
-        constructor(name = 'test', description, isComplete = false,  id) {
+        constructor(name = 'test', description, isCompleted = false,  id) {
             this.id = id || new Date().getTime();
             this.name = name;
             this.description = description ||  'test Descr';
-            this.isComplete = false;
+            this.isCompleted = true;
         }
     }
     
@@ -30,9 +30,23 @@ function App() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const handleAddTask = () => {
-        
         addTask(new Task())
         handleClose();
+    }
+    
+    const onChangeCompleted  = (taskId) => {
+        const taskIndex = tasks.findIndex((task) => task.id === taskId)
+        const updatedTask = [...tasks]
+        updatedTask[taskIndex].isCompleted = !updatedTask[taskIndex].isCompleted
+        setTasks(updatedTask);
+    }
+    
+    const onRemoveTask  = (taskId) => {
+        const updatedTask = tasks.reduce((acc, task)=>{
+            if (task.id !== taskId) acc.push(task);
+            return acc;
+        }, [])
+        setTasks(updatedTask);
     }
     
     return (
@@ -50,8 +64,14 @@ function App() {
                             <ListGroup.Item as="li" key={task.id}>
                                 <Card>
                                     <Card.Header>
-                                        <label className="task-name float-start"><input type="checkbox" className="form-check-input"/> { task.name }</label>
-                                        <Button className="float-end" variant="danger" onClick={handleClose}><Trash /></Button>
+                                        <label className="task-name float-start">
+                                            <input
+                                                type="checkbox" 
+                                                className="form-check-input task-complete"
+                                                checked={task.isCompleted}
+                                                onChange={e => onChangeCompleted(task.id)}/>{ task.name }
+                                        </label>
+                                        <Button className="float-end" variant="danger" onClick={e => onRemoveTask(task.id)}><Trash /></Button>
                                     </Card.Header>
                                     <Card.Body>{ task.description }</Card.Body>
                                 </Card>

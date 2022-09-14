@@ -5,3 +5,7 @@
 .task-name {
     font-size: 17pt;
 }
+
+.task-complete {
+    margin-right: 10px;
+}
