@@ -1,4 +1,4 @@
-import logo from './assets/logo.svg';
+// import logo from './assets/logo.svg';
 import './styles/App.css';
 
 import React, { useState } from 'react';
@@ -6,6 +6,8 @@ import React, { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import ListGroup from 'react-bootstrap/ListGroup';
+import { Trash } from 'react-bootstrap-icons';
 
 function App() {
     
@@ -43,11 +45,20 @@ function App() {
                 </Card.Header>
                 <Card.Body>
                     
-                    <div>
-                        {tasks.map( e =>
-                            <li key={e.id}>{ e.name }</li>
+                    <ListGroup>
+                        {tasks.map( (task) =>
+                            <ListGroup.Item as="li" key={task.id}>
+                                <Card>
+                                    <Card.Header>
+                                        <label className="task-name float-start"><input type="checkbox" className="form-check-input"/> { task.name }</label>
+                                        <Button className="float-end" variant="danger" onClick={handleClose}><Trash /></Button>
+                                    </Card.Header>
+                                    <Card.Body>{ task.description }</Card.Body>
+                                </Card>
+                            </ListGroup.Item>
                         )}
-                    </div>
+                    </ListGroup>
+                    
                 </Card.Body>
             </Card>
             <Modal show={show} onHide={handleClose}>
