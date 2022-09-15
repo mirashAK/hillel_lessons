@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { useState, forwardRef, useImperativeHandle} from 'react';
 
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-export default function TaskAddModal({ show, onHide, onSubmit }) {
+const TaskAddModal = forwardRef((props, ref) => {
+    
+    const { onSubmit } = props;
+    
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    
+    useImperativeHandle(ref, () => ({
+        show() {
+            handleShow();
+        },
+        hide() {
+            handleClose();
+        }
+    }));
     
     const taskNameRef = React.createRef();
     const taskDescreRef = React.createRef();
@@ -17,7 +32,7 @@ export default function TaskAddModal({ show, onHide, onSubmit }) {
     }
     
     return (
-        <Modal show={show} onHide={onHide}>
+        <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Add task</Modal.Title>
             </Modal.Header>
@@ -34,7 +49,7 @@ export default function TaskAddModal({ show, onHide, onSubmit }) {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={onHide}>
+                <Button variant="secondary" onClick={handleClose}>
                     Cancel
                 </Button>
                 <Button variant="primary" onClick={handleAddTask}>
@@ -43,4 +58,6 @@ export default function TaskAddModal({ show, onHide, onSubmit }) {
             </Modal.Footer>
         </Modal>
     );
-}
+});
+
+export default TaskAddModal;

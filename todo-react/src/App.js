@@ -1,7 +1,7 @@
 // import logo from './assets/logo.svg';
 import './styles/App.css';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
@@ -26,13 +26,12 @@ function App() {
         setTasks( (arr) => [...arr, task] );
     }
     
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const taskAddModalRef = useRef();
+    const handleShow = () => taskAddModalRef.current.show();
     
     const handleAddTask = ({name, description} = {}) => {
         addTask(new Task(name, description))
-        handleClose();
+        taskAddModalRef.current.hide();
     }
     
     const onChangeCompleted  = (taskId) => {
@@ -79,7 +78,7 @@ function App() {
                             </ListGroup.Item>
                         )}
                     </ListGroup>
-                    <TaskAddModal show={show} onHide={handleClose} onSubmit={handleAddTask} />
+                    <TaskAddModal ref={taskAddModalRef} onSubmit={handleAddTask} />
                 </Card.Body>
             </Card>
 
