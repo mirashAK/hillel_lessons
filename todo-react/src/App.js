@@ -5,10 +5,10 @@ import React, { useState } from 'react';
 
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
 import ListGroup from 'react-bootstrap/ListGroup';
-import Form from 'react-bootstrap/Form';
 import { Trash } from 'react-bootstrap-icons';
+
+import TaskAddModal from './components/TaskAddModal';
 
 function App() {
     
@@ -26,17 +26,12 @@ function App() {
         setTasks( (arr) => [...arr, task] );
     }
     
-    
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     
-    const taskNameRef = React.createRef();
-    const taskDescreRef = React.createRef();
-    
-    const handleAddTask = () => {
-        console.log(`taskNameRef: `, taskNameRef.current.value);
-        addTask(new Task(taskNameRef.current.value, taskDescreRef.current.value))
+    const handleAddTask = ({name, description} = {}) => {
+        addTask(new Task(name, description))
         handleClose();
     }
     
@@ -84,34 +79,10 @@ function App() {
                             </ListGroup.Item>
                         )}
                     </ListGroup>
-                    
+                    <TaskAddModal show={show} onHide={handleClose} onSubmit={handleAddTask} />
                 </Card.Body>
             </Card>
-            <Modal show={show} onHide={handleClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Add task</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Task name: </Form.Label>
-                                <Form.Control ref={taskNameRef} type="text" placeholder="Enter name" />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Task description: </Form.Label>
-                                <Form.Control ref={taskDescreRef} as="textarea" rows={3} />
-                            </Form.Group>
-                        </Form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Cancel
-                        </Button>
-                        <Button variant="primary" onClick={handleAddTask}>
-                            Add
-                        </Button>
-                    </Modal.Footer>
-            </Modal>
+
         </div>
     );
 }
