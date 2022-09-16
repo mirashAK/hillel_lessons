@@ -12,25 +12,31 @@ class Task {
 export const todoListSlice = createSlice({
     name: 'todoList',
     initialState: {
-        value: [
-            new Task('aaa','bbb', false, 1),
-            new Task('ccc','ddd', true, 2)
-        ]
+        value: []
     },
     reducers: {
-        markTodoTask: state => {
-
+        markTodoTask: (state, action) => {
+            const taskId = action.payload;
+            const taskIndex = state.value.findIndex((task) => task.id === taskId);
+            const updatedTask = [...state.value];
+            updatedTask[taskIndex].isCompleted = !updatedTask[taskIndex].isCompleted
+            state.value = updatedTask;
         },
         delTodoTask: (state, action) => {
-       
+            const taskId = action.payload;
+            const updatedTask = state.value.reduce((acc, task)=>{
+                if (task.id !== taskId) acc.push(task);
+                return acc;
+            }, []);
+            state.value = updatedTask;
         },
         addTodoTask: (state, action) => {
-            state.value = [...state.value, action.payload];
+            const {name, description} = action.payload
+            state.value = [...state.value, new Task(name, description)];
         }
     }
 })
 
-// Action creators are generated for each case reducer function
 export const { markTodoTask, delTodoTask, addTodoTask } = todoListSlice.actions
 
 export default todoListSlice.reducer

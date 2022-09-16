@@ -1,4 +1,6 @@
 import React, { useState, forwardRef, useImperativeHandle} from 'react';
+import { useDispatch } from 'react-redux';
+import { addTodoTask } from '../store/todoListSlice';
 
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
@@ -6,7 +8,7 @@ import Button from 'react-bootstrap/Button';
 
 const TaskAddModal = forwardRef((props, ref) => {
     
-    const { onSubmit } = props;
+    const dispatch = useDispatch();
     
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -25,10 +27,13 @@ const TaskAddModal = forwardRef((props, ref) => {
     const taskDescreRef = React.createRef();
 
     const handleAddTask = ()=>{
-        onSubmit({
-            name: taskNameRef.current.value, 
-            description: taskDescreRef.current.value
-        }); 
+        dispatch(
+            addTodoTask({
+                name: taskNameRef.current.value, 
+                description: taskDescreRef.current.value
+            })
+        ); 
+        handleClose();
     }
     
     return (
