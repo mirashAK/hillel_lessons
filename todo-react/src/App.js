@@ -46,7 +46,6 @@ function App() {
                     <TaskAddModal ref={taskAddModalRef} onSubmit={handleAddTask} />
                 </Card.Body>
             </Card>
-
         </div>
     );
 }
