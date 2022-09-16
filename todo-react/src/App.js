@@ -1,8 +1,11 @@
 // import logo from './assets/logo.svg';
 import './styles/App.css';
 
-import React, { useState, useRef } from 'react';
-import { Routes, Route, Outlet, Link } from "react-router-dom";
+import React from 'react';
+import { Routes, Route } from "react-router-dom";
+import { Provider } from 'react-redux';
+
+import store from './store/rootStore';
 
 import TodoList from './components/TodoList';
 import Layout from './pages/Layout';
@@ -13,19 +16,15 @@ function App() {
       
     return (
         <div className="App">
-            
-            <Routes>
-                <Route path="/" element={<Layout />}>
-                        <Route index element={<TodoList />} />
-                        <Route path="about" element={<About />} />
-
-                        {/* Using path="*"" means "match anything", so this route
-                                acts like a catch-all for URLs that we don't have explicit
-                                routes for. */}
-                        <Route path="*" element={<Empty />} />
-                </Route>
-            </Routes>
-            
+            <Provider store={store}>
+                <Routes>
+                    <Route path="/" element={<Layout />}>
+                            <Route index element={<TodoList />} />
+                            <Route path="about" element={<About />} />
+                            <Route path="*" element={<Empty />} />
+                    </Route>
+                </Routes>
+            </Provider>
         </div>
     );
 }

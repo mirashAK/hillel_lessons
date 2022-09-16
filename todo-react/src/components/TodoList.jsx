@@ -1,4 +1,7 @@
 import React, { useState, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { addTodoTask, increment } from '../store/todoListSlice';
 
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
@@ -6,29 +9,33 @@ import Button from 'react-bootstrap/Button';
 import TasksList from './TasksList';
 import TaskAddModal from './TaskAddModal';
 
+class Task {
+    constructor(name = 'test', description, isCompleted = false,  id) {
+        this.id = id || new Date().getTime();
+        this.name = name;
+        this.description = description ||  'test Descr';
+        this.isCompleted = false;
+    }
+}
+
 function TodoList() {
     
-    class Task {
-        constructor(name = 'test', description, isCompleted = false,  id) {
-            this.id = id || new Date().getTime();
-            this.name = name;
-            this.description = description ||  'test Descr';
-            this.isCompleted = false;
-        }
-    }
+    const tasks = useSelector(state => state.todoList.value);
+    const dispatch = useDispatch();
     
-    const [tasks, setTasks] = useState([]);
     const addTask = (task) => {
-        setTasks( (arr) => [...arr, task] );
+        dispatch(addTodoTask(task))
     }
-    
-    const taskAddModalRef = useRef();
-    const handleShow = () => taskAddModalRef.current.show();
     
     const handleAddTask = ({name, description} = {}) => {
         addTask(new Task(name, description))
         taskAddModalRef.current.hide();
     }
+    
+    const taskAddModalRef = useRef();
+    const handleShow = () => taskAddModalRef.current.show();
+    
+    const setTasks = ()=>true;
     
     return (
         <div className="TodoList">

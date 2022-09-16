@@ -20,7 +20,7 @@ class TaskCard extends React.Component {
                             type="checkbox" 
                             className="form-check-input task-complete"
                             checked={this.task.isCompleted}
-                            onChange={e => this.props.onChangeCompleted(this.task.id)}/>{this. task.name }
+                            onChange={e => this.props.onChangeCompleted(this.task.id)}/>{this.task.name}
                     </label>
                     <Button className="float-end" variant="danger" onClick={e => this.props.onRemoveTask(this.task.id)}><Trash /></Button>
                 </Card.Header>

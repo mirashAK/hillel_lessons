@@ -5,3 +5,7 @@ https://react-bootstrap.github.io
 
 npm install react-router-dom --save
 https://reactrouter.com/en/main
+
+npx create-react-app todo-react --template redux
+npm install redux react-redux @reduxjs/toolkit --save
+https://react-redux.js.org
