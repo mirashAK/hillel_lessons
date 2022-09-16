@@ -5,9 +5,8 @@ import React, { useState, useRef } from 'react';
 
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import ListGroup from 'react-bootstrap/ListGroup';
-import { Trash } from 'react-bootstrap-icons';
 
+import TasksList from './components/TasksList';
 import TaskAddModal from './components/TaskAddModal';
 
 function App() {
@@ -17,7 +16,7 @@ function App() {
             this.id = id || new Date().getTime();
             this.name = name;
             this.description = description ||  'test Descr';
-            this.isCompleted = true;
+            this.isCompleted = false;
         }
     }
     
@@ -34,21 +33,6 @@ function App() {
         taskAddModalRef.current.hide();
     }
     
-    const onChangeCompleted  = (taskId) => {
-        const taskIndex = tasks.findIndex((task) => task.id === taskId)
-        const updatedTask = [...tasks]
-        updatedTask[taskIndex].isCompleted = !updatedTask[taskIndex].isCompleted
-        setTasks(updatedTask);
-    }
-    
-    const onRemoveTask  = (taskId) => {
-        const updatedTask = tasks.reduce((acc, task)=>{
-            if (task.id !== taskId) acc.push(task);
-            return acc;
-        }, [])
-        setTasks(updatedTask);
-    }
-    
     return (
         <div className="App">
             <h2>My Tasks</h2>
@@ -58,26 +42,7 @@ function App() {
                     <Button variant="primary" className="float-end" onClick={handleShow}>Add task</Button>
                 </Card.Header>
                 <Card.Body>
-                    
-                    <ListGroup>
-                        {tasks.map( (task) =>
-                            <ListGroup.Item as="li" key={task.id}>
-                                <Card>
-                                    <Card.Header>
-                                        <label className="task-name float-start">
-                                            <input
-                                                type="checkbox" 
-                                                className="form-check-input task-complete"
-                                                checked={task.isCompleted}
-                                                onChange={e => onChangeCompleted(task.id)}/>{ task.name }
-                                        </label>
-                                        <Button className="float-end" variant="danger" onClick={e => onRemoveTask(task.id)}><Trash /></Button>
-                                    </Card.Header>
-                                    <Card.Body>{ task.description }</Card.Body>
-                                </Card>
-                            </ListGroup.Item>
-                        )}
-                    </ListGroup>
+                    <TasksList tasks={tasks} setTasks={setTasks} />
                     <TaskAddModal ref={taskAddModalRef} onSubmit={handleAddTask} />
                 </Card.Body>
             </Card>
