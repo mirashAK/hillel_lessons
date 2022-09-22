@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import {fetchTodos, fetchTodo} from './requests/todos';
+import {fetchTodos, fetchTodo, putTodo} from './requests/todos';
 
 class Task {
     constructor(name = 'test', description, isCompleted = false,  id) {
@@ -23,6 +23,21 @@ export const fetchTodosThunk = createAsyncThunk('todoList/fillTodos', async () =
   return response;
 })
 
+export function markTodo(todoId) {
+  return async function fetchTodoByIdThunk(dispatch, getState) {
+        
+        dispatch(markTodoTask(todoId));
+      
+        const todo = getState().todoList.tasks.filter((task)=>{
+            return task.id === todoId;
+        })
+        console.log(`todo: `, todo);
+        
+        const response = await putTodo(todo[0]);
+        console.log(`response: `, response);
+  }
+}
+
 export const todoListSlice = createSlice({
     name: 'todoList',
     initialState: initialState,
@@ -33,6 +48,10 @@ export const todoListSlice = createSlice({
             const updatedTask = [...state.tasks];
             updatedTask[taskIndex].isCompleted = !updatedTask[taskIndex].isCompleted
             state.tasks = updatedTask;
+            
+        },
+        updTodoTask: (state, action) => {
+            console.log(`action: `, action.payload);
         },
         delTodoTask: (state, action) => {
             const taskId = action.payload;
@@ -46,11 +65,6 @@ export const todoListSlice = createSlice({
             const {name, description} = action.payload
             state.tasks = [...state.tasks, new Task(name, description)];
         },
-        fillTodos: (state, action) => {
-            console.log('fillTodos', action.payload);
-            const tasks = action.payload
-            state.tasks = tasks;
-        },
     },
     extraReducers(builder) {
         builder
@@ -59,7 +73,10 @@ export const todoListSlice = createSlice({
             })
             .addCase(fetchTodosThunk.fulfilled, (state, action) => {
                 state.status = 'succeeded'
-                const tasks = action.payload
+                const tasks = action.payload.map((task)=>{
+                    const {name, description, isCompleted,  id} = task
+                    return new Task(name, description, isCompleted,  id);
+                });
                 state.tasks = tasks;
             })
             .addCase(fetchTodosThunk.rejected, (state, action) => {
@@ -69,6 +86,6 @@ export const todoListSlice = createSlice({
     }
 })
 
-export const { markTodoTask, delTodoTask, addTodoTask } = todoListSlice.actions
+export const { markTodoTask, delTodoTask, addTodoTask, updTodoTask } = todoListSlice.actions
 
 export default todoListSlice.reducer

@@ -23,7 +23,25 @@ const fetchTodo = (id)=>{
         .catch(err => err)
 }
 
+const putTodo = (todo)=>{
+    let request = `${BASE_URL}/todos/${encodeURI(todo.id)}`;
+    return fetch(request, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+                id: todo.id,
+                name: todo.name,
+                description: todo.description,
+                isCompleted: todo.isCompleted  
+            })
+        })
+        .then(res => res.json())
+        .then(res => res)
+        .catch(err => err)
+}
+
 export {
     fetchTodos,
     fetchTodo,
+    putTodo
 }

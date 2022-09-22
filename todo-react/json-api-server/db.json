@@ -1,5 +1,10 @@
 {
   "todos": [
-    { "id": 1, "name": "AAA", "description": "First Todo" }
+    {
+      "id": 1,
+      "name": "AAA",
+      "description": "First Todo",
+      "isCompleted": true
+    }
   ]
 }

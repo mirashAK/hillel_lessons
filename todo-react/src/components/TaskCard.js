@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { markTodoTask, delTodoTask } from '../store/todoListSlice';
+import { markTodo, markTodoTask, delTodoTask } from '../store/todoListSlice';
 
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
@@ -18,7 +18,7 @@ const TaskCard = function({task}) {
                         type="checkbox" 
                         className="form-check-input task-complete"
                         checked={task.isCompleted}
-                        onChange={e => dispatch(markTodoTask(task.id))}/>{task.name}
+                        onChange={e => dispatch(markTodo(task.id))}/>{task.name}
                 </label>
                 <Button className="float-end" variant="danger" onClick={e => dispatch(delTodoTask(task.id))}><Trash /></Button>
             </Card.Header>
