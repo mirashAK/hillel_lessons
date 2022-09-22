@@ -1,4 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
+import {fetchTodos, fetchTodo} from './requests/todos';
 
 class Task {
     constructor(name = 'test', description, isCompleted = false,  id) {
@@ -9,31 +11,61 @@ class Task {
     }
 }
 
+const initialState = {
+  tasks: [],
+  status: 'idle',
+  error: null
+}
+
+export const fetchTodosThunk = createAsyncThunk('todoList/fillTodos', async () => {
+  const response = await fetchTodos();
+  console.log('fetchTodosThunk', response);
+  return response;
+})
+
 export const todoListSlice = createSlice({
     name: 'todoList',
-    initialState: {
-        value: []
-    },
+    initialState: initialState,
     reducers: {
         markTodoTask: (state, action) => {
             const taskId = action.payload;
-            const taskIndex = state.value.findIndex((task) => task.id === taskId);
-            const updatedTask = [...state.value];
+            const taskIndex = state.tasks.findIndex((task) => task.id === taskId);
+            const updatedTask = [...state.tasks];
             updatedTask[taskIndex].isCompleted = !updatedTask[taskIndex].isCompleted
-            state.value = updatedTask;
+            state.tasks = updatedTask;
         },
         delTodoTask: (state, action) => {
             const taskId = action.payload;
-            const updatedTask = state.value.reduce((acc, task)=>{
+            const updatedTask = state.tasks.reduce((acc, task)=>{
                 if (task.id !== taskId) acc.push(task);
                 return acc;
             }, []);
-            state.value = updatedTask;
+            state.tasks = updatedTask;
         },
         addTodoTask: (state, action) => {
             const {name, description} = action.payload
-            state.value = [...state.value, new Task(name, description)];
-        }
+            state.tasks = [...state.tasks, new Task(name, description)];
+        },
+        fillTodos: (state, action) => {
+            console.log('fillTodos', action.payload);
+            const tasks = action.payload
+            state.tasks = tasks;
+        },
+    },
+    extraReducers(builder) {
+        builder
+            .addCase(fetchTodosThunk.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(fetchTodosThunk.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                const tasks = action.payload
+                state.tasks = tasks;
+            })
+            .addCase(fetchTodosThunk.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
     }
 })
 

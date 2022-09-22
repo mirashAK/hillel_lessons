@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useRef, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
@@ -7,12 +7,25 @@ import Button from 'react-bootstrap/Button';
 import TasksList from './TasksList';
 import TaskAddModal from './TaskAddModal';
 
+import {fetchTodosThunk} from '../store/todoListSlice.js';
+
 function TodoList() {
     
-    const tasks = useSelector(state => state.todoList.value);
+    const tasks = useSelector(state => state.todoList.tasks);
+    const tasksStatus = useSelector(state => state.todoList.status)
 
     const taskAddModalRef = useRef();
     const handleShow = () => taskAddModalRef.current.show();
+    
+    const dispatch = useDispatch();
+    
+    useEffect(() => {
+        console.log('useEffect', tasksStatus);
+        if (tasksStatus === 'idle') {
+            console.log('tasksStatus', tasksStatus);
+            dispatch(fetchTodosThunk())
+        }
+    }, [tasksStatus, dispatch])
 
     return (
         <div className="TodoList">
