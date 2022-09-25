@@ -20,7 +20,7 @@ const TaskCard = function({task}) {
                         checked={task.isCompleted}
                         onChange={e => dispatch(markTodo(task.id))}/>{task.name}
                 </label>
-                <Button className="float-end" variant="danger" onClick={e => dispatch(delTodoTask(task.id))}><Trash /></Button>
+                <Button className="float-end" variant="danger" onClick={e => dispatch({type: 'todoList/delTodoTask', payload: task.id})}><Trash /></Button>
             </Card.Header>
             <Card.Body>{ task.description }</Card.Body>
         </Card>

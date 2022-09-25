@@ -14,7 +14,7 @@ class Task {
     }
 }
 
-export const fetchTodosThunk = createAsyncThunk('todoList/fillTodos', async () => {
+export const fetchTodosThunk = createAsyncThunk('todoList/fetchTodosThunk', async () => {
     const response = await fetchTodos();
     await delay(3000);
     return response;

@@ -37,7 +37,7 @@ function TodoList() {
                 </Card.Header>
                 <Card.Body>
                     {
-                        (tasksStatus == 'succeeded') 
+                        (tasksStatus === REQ_STATS.SUCCEEDED) 
                         ? <TasksList tasks={tasks} /> 
                         : <Spinner animation="border" variant="primary" />
                     }
