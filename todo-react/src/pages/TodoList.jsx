@@ -5,8 +5,8 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 
-import TasksList from './TasksList';
-import TaskAddModal from './TaskAddModal';
+import TasksList from '../components/TasksList';
+import TaskAddModal from '../components/TaskAddModal';
 
 import {fetchTodosThunk, updTodoTask} from '../store/todoListSlice.js';
 import REQ_STATS from '../helpers/statuses.js';

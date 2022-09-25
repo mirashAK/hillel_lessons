@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 
 import store from './store/rootStore';
 
-import TodoList from './components/TodoList';
+import TodoList from './pages/TodoList';
 import Layout from './pages/Layout';
 import About from './pages/About';
 import Empty from './pages/Empty';
