@@ -9,7 +9,7 @@ const fetchTodos = (filter = {})=>{
     return fetch(request)
         .then(res => res.json())
         .then(res => res)
-        .catch(err => err)
+        .catch(err => Promise.reject(new Error(err)))
 }
 
 const fetchTodo = (id)=>{
@@ -17,7 +17,7 @@ const fetchTodo = (id)=>{
     return fetch(request)
         .then(res => res.json())
         .then(res => res)
-        .catch(err => err)
+        .catch(err => Promise.reject(new Error(err)))
 }
 
 const putTodo = (todo)=>{
@@ -34,7 +34,7 @@ const putTodo = (todo)=>{
         })
         .then(res => res.json())
         .then(res => res)
-        .catch(err => err)
+        .catch(err => Promise.reject(new Error(err)))
 }
 
 export {

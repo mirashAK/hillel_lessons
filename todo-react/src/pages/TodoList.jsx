@@ -14,7 +14,8 @@ import REQ_STATS from '../helpers/statuses.js';
 function TodoList() {
     
     const tasks = useSelector(state => state.todoList.tasks);
-    const tasksStatus = useSelector(state => state.todoList.status)
+    const tasksStatus = useSelector(state => state.todoList.status);
+    const tasksError = useSelector(state => state.todoList.error);
 
     const taskAddModalRef = useRef();
     const handleShow = () => taskAddModalRef.current.show();
@@ -24,6 +25,9 @@ function TodoList() {
     useEffect(() => {
         if (tasksStatus === REQ_STATS.IDLE) {
             dispatch(fetchTodosThunk())
+        }
+        if (tasksStatus === REQ_STATS.FAILED) {
+            alert(tasksError);
         }
     }, [tasksStatus])
 
