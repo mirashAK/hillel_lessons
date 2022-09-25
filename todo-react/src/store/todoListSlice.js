@@ -2,45 +2,42 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import {fetchTodos, fetchTodo, putTodo} from './requests/todos';
 
+import delay from '../helpers/delay.js';
+import REQ_STATS from '../helpers/statuses.js';
+
 class Task {
     constructor(name = 'test', description, isCompleted = false,  id) {
         this.id = id || new Date().getTime();
         this.name = name;
         this.description = description ||  'test Descr';
-        this.isCompleted = false;
+        this.isCompleted = isCompleted || false;
     }
 }
 
-const initialState = {
-  tasks: [],
-  status: 'idle',
-  error: null
-}
-
 export const fetchTodosThunk = createAsyncThunk('todoList/fillTodos', async () => {
-  const response = await fetchTodos();
-  console.log('fetchTodosThunk', response);
-  return response;
+    const response = await fetchTodos();
+    await delay(3000);
+    return response;
 })
 
 export function markTodo(todoId) {
-  return async function fetchTodoByIdThunk(dispatch, getState) {
-        
+  return async function (dispatch, getState) {
         dispatch(markTodoTask(todoId));
-      
         const todo = getState().todoList.tasks.filter((task)=>{
             return task.id === todoId;
         })
-        console.log(`todo: `, todo);
-        
         const response = await putTodo(todo[0]);
-        console.log(`response: `, response);
+        return response;
   }
 }
 
 export const todoListSlice = createSlice({
     name: 'todoList',
-    initialState: initialState,
+    initialState:  {
+        tasks: [],
+        status: REQ_STATS.IDLE,
+        error: null
+    },
     reducers: {
         markTodoTask: (state, action) => {
             const taskId = action.payload;
@@ -48,10 +45,8 @@ export const todoListSlice = createSlice({
             const updatedTask = [...state.tasks];
             updatedTask[taskIndex].isCompleted = !updatedTask[taskIndex].isCompleted
             state.tasks = updatedTask;
-            
         },
         updTodoTask: (state, action) => {
-            console.log(`action: `, action.payload);
         },
         delTodoTask: (state, action) => {
             const taskId = action.payload;
@@ -62,17 +57,17 @@ export const todoListSlice = createSlice({
             state.tasks = updatedTask;
         },
         addTodoTask: (state, action) => {
-            const {name, description} = action.payload
+            const {name, description} = action.payload;
             state.tasks = [...state.tasks, new Task(name, description)];
         },
     },
     extraReducers(builder) {
         builder
             .addCase(fetchTodosThunk.pending, (state, action) => {
-                state.status = 'loading'
+                state.status = REQ_STATS.LOADING;
             })
             .addCase(fetchTodosThunk.fulfilled, (state, action) => {
-                state.status = 'succeeded'
+                state.status = REQ_STATS.SUCCEEDED;
                 const tasks = action.payload.map((task)=>{
                     const {name, description, isCompleted,  id} = task
                     return new Task(name, description, isCompleted,  id);
@@ -80,12 +75,18 @@ export const todoListSlice = createSlice({
                 state.tasks = tasks;
             })
             .addCase(fetchTodosThunk.rejected, (state, action) => {
-                state.status = 'failed'
-                state.error = action.error.message
+                state.status = REQ_STATS.FAILED;
+                state.error = action.error.message;
             })
     }
 })
 
-export const { markTodoTask, delTodoTask, addTodoTask, updTodoTask } = todoListSlice.actions
+export const { 
+    setTodoListStatus, 
+    markTodoTask,
+    delTodoTask,
+    addTodoTask,
+    updTodoTask
+} = todoListSlice.actions
 
 export default todoListSlice.reducer

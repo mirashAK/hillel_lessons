@@ -8,10 +8,7 @@ const fetchTodos = (filter = {})=>{
     }
     return fetch(request)
         .then(res => res.json())
-        .then(res => {
-            console.log('res', res);
-            return res;
-        })
+        .then(res => res)
         .catch(err => err)
 }
 

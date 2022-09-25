@@ -3,11 +3,13 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 
 import TasksList from './TasksList';
 import TaskAddModal from './TaskAddModal';
 
-import {fetchTodosThunk} from '../store/todoListSlice.js';
+import {fetchTodosThunk, updTodoTask} from '../store/todoListSlice.js';
+import REQ_STATS from '../helpers/statuses.js';
 
 function TodoList() {
     
@@ -20,23 +22,25 @@ function TodoList() {
     const dispatch = useDispatch();
     
     useEffect(() => {
-        console.log('useEffect', tasksStatus);
-        if (tasksStatus === 'idle') {
-            console.log('tasksStatus', tasksStatus);
+        if (tasksStatus === REQ_STATS.IDLE) {
             dispatch(fetchTodosThunk())
         }
-    }, [tasksStatus, dispatch])
+    }, [tasksStatus])
 
     return (
         <div className="TodoList">
             <h2>My Tasks</h2>
-            <Card style={{ width: '50%', margin: '0 auto' }}>
+            <Card style={{ width: '80%', margin: '0 auto' }}>
                 <Card.Header>
                     <h3 className="float-start">All tasks</h3>
                     <Button variant="primary" className="float-end" onClick={handleShow}>Add task</Button>
                 </Card.Header>
                 <Card.Body>
-                    <TasksList tasks={tasks} />
+                    {
+                        (tasksStatus == 'succeeded') 
+                        ? <TasksList tasks={tasks} /> 
+                        : <Spinner animation="border" variant="primary" />
+                    }
                     <TaskAddModal ref={taskAddModalRef} />
                 </Card.Body>
             </Card>
