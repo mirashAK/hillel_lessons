@@ -7,17 +7,27 @@ const fetchTodos = (filter = {})=>{
         request += `?${filters.join('&')}`
     }
     return fetch(request)
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok || res.status !== 200) {
+               return Promise.reject(new Error(`${res.status}: ${res.statusText}`))
+            }
+            return res.json() 
+        })
         .then(res => res)
-        .catch(err => Promise.reject(new Error(err)))
+        .catch(err => Promise.reject(err))
 }
 
 const fetchTodo = (id)=>{
     let request = `${BASE_URL}/todos/${encodeURI(id)}`;
     return fetch(request)
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok || res.status !== 200) {
+               return Promise.reject(new Error(`${res.status}: ${res.statusText}`))
+            }
+            return res.json() 
+        })
         .then(res => res)
-        .catch(err => Promise.reject(new Error(err)))
+        .catch(err => Promise.reject(err))
 }
 
 const putTodo = (todo)=>{
@@ -32,9 +42,14 @@ const putTodo = (todo)=>{
                 isCompleted: todo.isCompleted  
             })
         })
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok || res.status !== 200) {
+               return Promise.reject(new Error(`${res.status}: ${res.statusText}`))
+            }
+            return res.json() 
+        })
         .then(res => res)
-        .catch(err => Promise.reject(new Error(err)))
+        .catch(err => Promise.reject(err))
 }
 
 export {

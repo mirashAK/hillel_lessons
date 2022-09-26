@@ -5,11 +5,11 @@ import {fetchTodos, fetchTodo, putTodo} from './requests/todos';
 import delay from '../helpers/delay.js';
 import REQ_STATS from '../helpers/statuses.js';
 
-class Task {
-    constructor(name = 'test', description, isCompleted = false,  id) {
+export class Task {
+    constructor(name = '', description, isCompleted = false,  id) {
         this.id = id || new Date().getTime();
         this.name = name;
-        this.description = description ||  'test Descr';
+        this.description = description ||  '';
         this.isCompleted = isCompleted || false;
     }
 }
@@ -19,6 +19,32 @@ export const fetchTodosThunk = createAsyncThunk('todoList/fetchTodosThunk', asyn
     await delay(3000);
     return response;
 })
+
+
+export function fetchTodoThunk (todoId) {
+    return async function (dispatch, getState) {
+        try {
+            const response = await fetchTodo(todoId);
+            await delay(1000);
+            return response;
+        } catch (err) {
+            return Promise.reject(err);
+        }
+    }
+}
+
+export function putTodoThunk (todoObj) {
+  return async function (dispatch, getState) {
+        try {
+            const {name, description, isCompleted,  id} = todoObj;
+            const todo  = new Task(name, description, isCompleted,  id)
+            const response = await putTodo(todo);
+            dispatch(updTodoTask(todo))
+        } catch (err) {
+            return Promise.reject(err);
+        }
+  }
+}
 
 export function markTodo(todoId) {
   return async function (dispatch, getState) {
@@ -42,19 +68,27 @@ export const todoListSlice = createSlice({
         markTodoTask: (state, action) => {
             const taskId = action.payload;
             const taskIndex = state.tasks.findIndex((task) => task.id === taskId);
-            const updatedTask = [...state.tasks];
-            updatedTask[taskIndex].isCompleted = !updatedTask[taskIndex].isCompleted
-            state.tasks = updatedTask;
+            const updatedTasks = [...state.tasks];
+            updatedTasks[taskIndex].isCompleted = !updatedTasks[taskIndex].isCompleted
+            state.tasks = updatedTasks;
         },
         updTodoTask: (state, action) => {
+            const taskObj = action.payload;
+            const taskIndex = state.tasks.findIndex((task) => task.id === taskObj.id);
+            if (taskIndex > -1) {
+                const updatedTasks = [...state.tasks];
+                const {name, description, isCompleted,  id} = taskObj;
+                updatedTasks[taskIndex] = new Task(name, description, isCompleted,  id);
+                state.tasks = updatedTasks;
+            }
         },
         delTodoTask: (state, action) => {
             const taskId = action.payload;
-            const updatedTask = state.tasks.reduce((acc, task)=>{
+            const updatedTasks = state.tasks.reduce((acc, task)=>{
                 if (task.id !== taskId) acc.push(task);
                 return acc;
             }, []);
-            state.tasks = updatedTask;
+            state.tasks = updatedTasks;
         },
         addTodoTask: (state, action) => {
             const {name, description} = action.payload;

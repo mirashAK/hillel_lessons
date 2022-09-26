@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import store from './store/rootStore';
 
 import TodoList from './pages/TodoList';
+import TodoEdit from './pages/TodoEdit';
 import Layout from './pages/Layout';
 import About from './pages/About';
 import Empty from './pages/Empty';
@@ -20,6 +21,8 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Layout />}>
                             <Route index element={<TodoList />} />
+                            <Route path="todo" element={<Empty />} />
+                            <Route path="todo/:taskId" element={<TodoEdit />} />
                             <Route path="about" element={<About />} />
                             <Route path="*" element={<Empty />} />
                     </Route>

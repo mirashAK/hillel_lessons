@@ -49,7 +49,7 @@ const TaskAddModal = forwardRef((props, ref) => {
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Task description: </Form.Label>
-                        <Form.Control ref={taskDescreRef} as="textarea" rows={3} />
+                        <Form.Control ref={taskDescreRef} as="textarea" rows={3} placeholder="Enter task description" />
                     </Form.Group>
                 </Form>
             </Modal.Body>
