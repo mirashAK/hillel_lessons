@@ -1,0 +1,8 @@
+npm install -g @angular/cli
+
+ng new <folder>
+
+ng serve --open --port 3015
+
+// Prompt different
+ng add @angular/material
