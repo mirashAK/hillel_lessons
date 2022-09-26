@@ -1,6 +1,6 @@
 import React, { useState, forwardRef, useImperativeHandle} from 'react';
 import { useDispatch } from 'react-redux';
-import { addTodoTask } from '../store/todoListSlice';
+import { postTodoThunk } from '../store/todoListSlice';
 
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
@@ -28,7 +28,7 @@ const TaskAddModal = forwardRef((props, ref) => {
 
     const handleAddTask = ()=>{
         dispatch(
-            addTodoTask({
+            postTodoThunk({
                 name: taskNameRef.current.value, 
                 description: taskDescreRef.current.value
             })

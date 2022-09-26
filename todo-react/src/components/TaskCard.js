@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import { markTodo, markTodoTask, delTodoTask } from '../store/todoListSlice';
+import { markTodo, markTodoTask, delTodoThunk } from '../store/todoListSlice';
 
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
@@ -42,7 +42,7 @@ const TaskCard = function({task}) {
                         </Button>
                     </ButtonGroup>
                     <ButtonGroup>
-                        <Button variant="danger"  onClick={e => dispatch({type: 'todoList/delTodoTask', payload: task.id})}>
+                        <Button variant="danger"  onClick={e => dispatch(delTodoThunk(task.id))}>
                             <Trash />
                         </Button>
                     </ButtonGroup>

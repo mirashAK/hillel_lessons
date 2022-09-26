@@ -94,18 +94,18 @@ function TaskForm(props) {
                     />
                 </Form.Group>
             </Form>
-            <Button variant="success" className="float-start" 
+            <Button variant="secondary" className="float-start" 
+                    onClick={(ev)=>navigate('/')}
+                >
+                Cancel
+            </Button>
+            <Button variant="success" className="float-end" 
                 onClick={async (ev)=> {
                     await dispatch(putTodoThunk(editTask));
                     navigate('/');
                 }}
                 >
                 Edit
-            </Button>
-            <Button variant="secondary" className="float-end" 
-                    onClick={(ev)=>navigate('/')}
-                >
-                Cancel
             </Button>
         </>
     )

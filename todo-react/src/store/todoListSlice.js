@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import {fetchTodos, fetchTodo, putTodo} from './requests/todos';
+import {fetchTodos, fetchTodo, putTodo, delTodo, postTodo} from './requests/todos';
 
 import delay from '../helpers/delay.js';
 import REQ_STATS from '../helpers/statuses.js';
@@ -15,9 +15,13 @@ export class Task {
 }
 
 export const fetchTodosThunk = createAsyncThunk('todoList/fetchTodosThunk', async () => {
-    const response = await fetchTodos();
-    await delay(3000);
-    return response;
+    try {
+        const response = await fetchTodos();
+        await delay(3000);
+        return response;
+    } catch (err) {
+        return Promise.reject(err);
+    }
 })
 
 
@@ -40,6 +44,30 @@ export function putTodoThunk (todoObj) {
             const todo  = new Task(name, description, isCompleted,  id)
             const response = await putTodo(todo);
             dispatch(updTodoTask(todo))
+        } catch (err) {
+            return Promise.reject(err);
+        }
+  }
+}
+
+export function postTodoThunk (todoObj) {
+  return async function (dispatch, getState) {
+        try {
+            const {name, description} = todoObj;
+            const todo  = new Task(name, description)
+            const response = await postTodo(todo);
+            dispatch(addTodoTask(todo));
+        } catch (err) {
+            return Promise.reject(err);
+        }
+  }
+}
+
+export function delTodoThunk (todoId) {
+  return async function (dispatch, getState) {
+        try {
+            const response = await delTodo(todoId);
+            dispatch(delTodoTask(todoId))
         } catch (err) {
             return Promise.reject(err);
         }
@@ -91,8 +119,8 @@ export const todoListSlice = createSlice({
             state.tasks = updatedTasks;
         },
         addTodoTask: (state, action) => {
-            const {name, description} = action.payload;
-            state.tasks = [...state.tasks, new Task(name, description)];
+            const {name, description, isCompleted,  id} = action.payload;
+            state.tasks = [...state.tasks, new Task(name, description, isCompleted,  id)];
         },
     },
     extraReducers(builder) {
