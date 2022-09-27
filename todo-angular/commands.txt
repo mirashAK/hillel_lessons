@@ -4,5 +4,8 @@ ng new <folder>
 
 ng serve --open --port 3015
 
-// Prompt different
+// Will prompt different variants
 ng add @angular/material
+
+// add less
+ng config schematics.@schematics/angular:component.styleext less
