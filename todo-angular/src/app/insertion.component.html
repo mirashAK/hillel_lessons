@@ -1,0 +1,43 @@
+<!--<h2>{{title}}</h2>
+<div class="divTable">
+    <div class="headRow">
+        <div *ngFor="let val of [].constructor(arrLength), let idx = index" class="divCell">
+            {{idx}}
+        </div>
+    </div>
+
+    <div *ngFor="let arr of arrayRender, let x = index" [@simpleFadeAnimation]="'in'" class="divRow">
+        <div *ngFor="let sub of arr" class="divCell">
+            {{sub}}
+        </div>
+    </div>
+</div>-->
+
+<div class="flex-wrapper">
+
+    <div class="divTable">
+
+        <h2>Insertion sort</h2>
+
+        <div class="headRow">
+            <div class="divCell">[ i, j ]</div>
+            <div *ngFor="let arrEl of testArray, let idx = index" class="divCell">
+                {{arrEl}}
+            </div>
+        </div>
+
+
+        <div *ngFor="let arr of arrayRender, let x = index" [@simpleFadeAnimation]="'in'" class="divRow">
+            <div class="divCell">{{idxRender[x]}}</div>
+            <div *ngFor="let sub of arr" class="divCell">
+                {{sub}}
+            </div>
+        </div>
+
+    </div>
+
+    <div class="illustration">
+        <img src="/assets/sorting/sort-insertion.png" alt="insertion-sort" />
+    </div>
+
+</div>

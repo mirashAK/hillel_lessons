@@ -1,0 +1,41 @@
+.flex-wrapper {
+    display: flex;
+    align-items: flex-start;
+}
+
+.illustration {
+   margin-top: 50px;
+   margin-left: 20px;
+}
+
+.divTable {
+    display:  table;
+    width:auto;
+    /*background-color:#aaa;*/
+    margin-left: 10px;
+    border:1px solid  #666666;
+    border-spacing:10px;/*cellspacing:poor IE support for  this*/
+    /* border-collapse:separate;*/
+}
+
+.headRow {
+    display:table-row;
+    width:auto;
+}
+
+.divRow {
+    display:table-row;
+    width:auto;
+}
+
+.divCell {
+    float: left;/*fix for  buggy browsers*/
+    display: table-column;
+    min-width: 50px;
+    text-align: center;
+    background-color: #eee;
+}
+
+.headRow > .divCell {
+    background-color:#bbb;
+}
