@@ -83,9 +83,8 @@ export class SelectionComponent  implements OnInit {
                 }
             }
 
-            //compare the indexes
             if (min !== i) {
-                //swap
+                // меняем местами
                 //[arr[i], arr[min]] = [arr[min], arr[i]];
                 const tmp = sArray[i];
                 sArray[i] = sArray[min];

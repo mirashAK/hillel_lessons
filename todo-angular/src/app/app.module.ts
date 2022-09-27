@@ -9,13 +9,17 @@ import { AppRoutingModule } from './app.routing.module';
 import { BubbleComponent } from './bubble.component';
 import { InsertionComponent } from './insertion.component';
 import { SelectionComponent } from './selection.component';
+import { MergeComponent } from './merge.component';
+import { QuickComponent } from './quick.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         BubbleComponent,
         InsertionComponent,
-        SelectionComponent
+        SelectionComponent,
+        MergeComponent,
+        QuickComponent
     ],
     imports: [
         BrowserModule,
