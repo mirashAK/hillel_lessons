@@ -20,7 +20,7 @@ const init = function(){
     const sortButton = document.getElementById('sort_button');
     const updButton = document.getElementById('update_button');
     
-    const baseArray = [];
+    let baseArray = [];
     
     const createArray = function(iDim = 0, jDim = 0) {
         let resultArray = [];
