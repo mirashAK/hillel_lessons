@@ -35,25 +35,6 @@ export class AppComponent  implements OnInit {
 
     testArray: number[] = [];
 
-    ngOnInit(): void {
-//         let count = this.arrLength;
-//         const interval = setInterval(()=>{
-//             if (count-- <= 0) clearInterval(interval);
-//             this.add();
-//         }, 500)
-
-
-        for (let idx = 0; idx < this.arrLength; idx++) {
-            this.testArray.push(this.getRandom(100));
-        }
-
-        this.bubbleSort(this.testArray, ()=>1)
-        .then((res)=>{
-            //console.log(`res: `, res);
-        })
-
-    }
-
     getRandom(max?: number): number {
         const random = Math.floor(Math.random() * (max || 10));
         return random
@@ -75,7 +56,30 @@ export class AppComponent  implements OnInit {
         this.arrayRender.push(this.arrayCurrent);
     }
 
-    async bubbleSort(array: number[], callback: (el1?: number, el2?: number) => number): Promise<number[]> {
+    ngOnInit(): void {
+//         let count = this.arrLength;
+//         const interval = setInterval(()=>{
+//             if (count-- <= 0) clearInterval(interval);
+//             this.add();
+//         }, 500)
+
+
+        for (let idx = 0; idx < this.arrLength; idx++) {
+            this.testArray.push(this.getRandom(100));
+        }
+
+        const sortCallback = (el1: number, el2: number) => {
+            return el1 > el2;
+        }
+
+        this.bubbleSort(this.testArray, sortCallback)
+        .then((res)=>{
+            //console.log(`res: `, res);
+        })
+
+    }
+
+    async bubbleSort(array: number[], callback: (el1: number, el2: number) => boolean): Promise<number[]> {
 
         const sArray = [...array];
         this.arrayRender = [];
@@ -86,7 +90,7 @@ export class AppComponent  implements OnInit {
             //Inner pass
             for(let j = 0; j < array.length - i - 1; j++)
             {
-                if (sArray[j] > sArray[j + 1]) {
+                if (callback(sArray[j], sArray[j + 1])) {
                     const tmp = sArray[j];
                     sArray[j] = sArray[j + 1];
                     sArray[j + 1] = tmp;

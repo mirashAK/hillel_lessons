@@ -1,5 +1,11 @@
 .flex-wrapper {
     display: flex;
+    align-items: flex-start;
+}
+
+.illustration {
+   margin-top: 50px;
+   margin-left: 20px;
 }
 
 .divTable {
