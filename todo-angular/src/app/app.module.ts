@@ -8,12 +8,14 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
 import { BubbleComponent } from './bubble.component';
 import { InsertionComponent } from './insertion.component';
+import { SelectionComponent } from './selection.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         BubbleComponent,
-        InsertionComponent
+        InsertionComponent,
+        SelectionComponent
     ],
     imports: [
         BrowserModule,
