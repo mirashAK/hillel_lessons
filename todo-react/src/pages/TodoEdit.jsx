@@ -22,24 +22,26 @@ function TodoEdit() {
     const tasksStatus = useSelector(state => state.todoList.status);
     
     useEffect(() => {
-        const currTask = tasks.filter((task)=>task.id === +taskId);
-        if (currTask.length == 1) {
-            const {name, description, isCompleted,  id} = currTask[0];
-            setEditTask(new Task(name, description, isCompleted,  id));
-            setEditTaskLoader(false);
-        } else {
-            dispatch(fetchTodoThunk(+taskId))
-            .then((task)=>{
-                const {name, description, isCompleted,  id} = task;
+        if (Object.keys(editTask) == 0) {
+            const currTask = tasks.filter((task)=>task.id === +taskId);
+            if (currTask.length == 1) {
+                const {name, description, isCompleted,  id} = currTask[0];
                 setEditTask(new Task(name, description, isCompleted,  id));
                 setEditTaskLoader(false);
-            })
-            .catch((err)=>{
-                console.error(err);
-                navigate('/todo');
-            })
+            } else {
+            dispatch(fetchTodoThunk(+taskId))
+                .then((task)=>{
+                    const {name, description, isCompleted,  id} = task;
+                    setEditTask(new Task(name, description, isCompleted,  id));
+                    setEditTaskLoader(false);
+                })
+                .catch((err)=>{
+                    console.error(err);
+                    navigate('/todo');
+                })
+            }
         }
-    }, [taskId, editTaskLoader]);
+    });
     
     return (
         <Card style={{ width: '40%', margin: '0 auto' }}>
