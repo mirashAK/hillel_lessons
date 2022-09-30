@@ -8,7 +8,7 @@ module.exports = {
         hot: true,
     },
     entry: {
-        index: path.resolve(__dirname, "src", "main.ts") 
+        index: path.resolve(__dirname, "src", "main.js") 
     },
     output: {
         filename: '[name].[contenthash].js',
@@ -31,7 +31,7 @@ module.exports = {
                 use: ["style-loader", "css-loader"]
             },
             {
-                test: /\.tsx?$/,
+                test: /\.(ts|tsx)?$/,
                 use: 'ts-loader',
                 exclude: /node_modules/,
             },

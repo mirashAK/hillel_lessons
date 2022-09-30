@@ -2,85 +2,95 @@ import "./styles/style.css";
 import "./styles/style.less";
 
 const buttonView = require('./views/button.js');
-const contactsView = require('./views/contactsList.js');
+// const contactsView = require('./views/contactsList.js');
+//import {contactsView} from './views/contactsList.js';
+import {numberCube} from './views/numberCube.js';
 
-const list = document.getElementById('list');
+import {getRandomIntInclusive} from './helpers/helper.random.ts';
 
-const contactsList = [
-    {name: 'AAA'},
-    {name: 'BBB'}
-];
+const app = document.getElementById('app');
 
-const addNewContact = function() {
-    contactsList.push( {name: 'CCC'})
-    list.innerHTML = contactsView({contacts: contactsList});
-}
-
-const renderContactsList = function(contacts) {
-    list.innerHTML = contactsView({contacts: contacts});
-}
-
-function sendReq1 () {
-    const request1 = new Promise (function(resolve, reject){
-        const Xrequest = new XMLHttpRequest();
-        Xrequest.onload = ()=>{
-            if (Xrequest.status == 200) {
-                resolve(JSON.parse(Xrequest.responseText));
-            } else {
-                reject(Xrequest.statusText);
-            }
-        };
-        Xrequest.open("get", "http://localhost:3001/contacts", true);
-        Xrequest.send();
-    });
-    return request1;
-}
-
-async function sendReq2 () {
-    try {
-        const response = await fetch('http://localhost:3001/profile')
-        const request2 = await response.json();
-        return request2;
-        // or:  return response.json();
-    } catch(e) {
-       return e; 
+class Cube {
+    constructor(){
+      this.name = 'Cube';
+    }
+    
+    getName = function () {
+      console.log(`getName.this: `,  this);
+      console.log(`getName.args: `, arguments);
+      return this.name;
+    }
+    
+    //getName() 
+    getNameArrow = ()=>{
+      console.log(`getNameArrow.this: `, this);
+      return this.name;
     }
 }
 
-const init = async function() {
-    document.getElementById('buttons').innerHTML = buttonView({id: "addContact", text: "newButton"});
-    
-    const addButton = document.getElementById('addContact');
-    addButton.addEventListener('click', addNewContact);
-    
-    try {
-    
-        const contacts = await sendReq1();
-        
-        const profile = await sendReq2();
-        
-        contacts.forEach((contact)=>{
-            contact.profile = profile.name;
-        });
-        
-        renderContactsList(contacts);
-    
-    } catch(e) {
-        console.error(`e: `, e);
-    }
+const cube = new Cube();
+console.log(`cube.name: `, cube.getName());
 
+const renderCubes = function(count) {
     
-//     sendReq1().then((contacts)=>{
-//         sendReq2().then((profile)=>{
-//             contacts.forEach((contact)=>{
-//                 contact.profile = profile.name;
-//             })
-//             renderContactsList(contacts);
-//         })
-//         .catch(e=>e);//=>{return e;}
-//     })
-//     .catch(e=>e);//=>{return e;}
+    let cubes = '';
+    while (count--) {
+        cubes += numberCube({number: getRandomIntInclusive(-10, 100)})
+    }
     
+    app.innerHTML = cubes;
+}
+
+
+const init = function() {
+    
+    renderCubes(10);
+    const elements = document.querySelectorAll('.drag-cube');
+    elements.forEach((el)=>{
+        dragElement(el, ()=>{cube.getName()}/*.bind(cube)*/, cube.getNameArrow);
+    })
+  
+}
+
+function dragElement(elmnt, callback, callback2) {
+  let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  //elmnt.addEventListener('mousedown', dragMouseDown);
+  elmnt.onmousedown = dragMouseDown;
+  
+  function dragMouseDown(e) {
+    console.log(`window: `, window.event);
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+    console.log(`this: `, this);
+    if (callback) console.log('callback()', callback());
+    if (callback2) console.log('callback2()', callback2());
+  }
+
+  function elementDrag(e) {
+    
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    // stop moving when mouse button is released:
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
 }
 
 document.addEventListener('DOMContentLoaded', init);

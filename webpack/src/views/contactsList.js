@@ -7,11 +7,11 @@ const defaults = {
 const template = 
     `<ul>
         {{#contacts}}
-            <li>{{profile}}->{{name}}</li>
+            <li>{{id}}->{{name}}</li>
         {{/contacts}}
     </ul>`;
 
-module.exports = function (params = {}) { 
+export  function contactsView (params = {}) { 
     params = Object.assign(defaults, params);
     return Mustache.render(template, params);
 };
