@@ -1,106 +1,73 @@
 class HtmlElement {
-    id = 'inputId';
-    text = 'HtmlInput';
-    template = '';
+    id = 'inpitId';
+    text = 'HtmlElement';
+    template = '<div id="{id}">{text}</div>';
     container;
     
-    constructor(params = {}) { //{text: 'My custom input'}
-        if (params.text) this.text = params.text;
-    }
-    
-    placeIn(container) {
-        if (!this.container) {
-            this.container = container;
-        }
-        this.container.innerHTML = this.render();
+    constructor(params = {}) {
+        this.id = params.id ? params.id : this.id;
+        this.text = params.text ? params.text : this.text;
+        this.container = params.container || null;
     }
     
     render() {
-       return this.template
-       .replace('{text}', this.text)
-       .replace('{id}', this.id)
+        return this.template
+        .replace('{id}', this.id)
+        .replace('{text}', this.text);
+    }
+    
+    placeIn() {
+        if (!this.container) return false;
+        this.container.innerHTML += this.render();
+    }
+    
+}
+
+class HtmInput extends HtmlElement {
+    template = '<input type="text" id="{id}" value="{text}" />';
+    
+    constructor(params = {}) {
+        super(params);
+        this.placeIn();
     }
     
     get value() {
         if (!this.container) return '';
         return this.container.querySelector(`#${this.id}`).value;
     }
+    
     set value(val) {
-        if (!this.container) return;
+        this.container.querySelector(`#${this.id}`).value = val;
         this.text = val;
-        this.container.innerHTML = this.render();
     }
+    
 }
 
-class HtmlInput  extends HtmlElement {
-    
-    template = '<input type="text" id="{id}" value="{text}" />';
-    
-    constructor(params = {}) { //{text: 'My custom input'}
-        super(params);
-        this.text = 'input_' + this.text;
-        this.id = 'input_' + Date.now();
-    }
-}
-
-class HtmlColorInput extends HtmlInput {
-    template = '<input type="text" id="{id}" value="{text}" style="border: 2px solid {color};" />';
-    
-    constructor(params = {}) { 
-        super(params);
-        this.color = params.color ? params.color : 'red';
-    }
-    
-    render() {
-       return this.template
-       .replace('{text}', this.text)
-       .replace('{id}', this.id)
-       .replace('{color}', this.color)
-    }
-}
-
-class HtmlTextarea  extends HtmlElement{
-    
-    template = '<textarea id="{id}" cols="10" rows="5" >{text}</textarea> ';
-    
-    constructor(params = {}) {
-        super(params);
-        this.id = 'textarea_' + Date.now();
-        this.text = 'textarea_' + this.text;
-    }
-}
 
 const init = function(){
     
-    
     const container = document.getElementById('container');
-    const buttons = document.getElementById('buttons').getElementsByTagName('button');
-
-    const clickHandler = function(event) {
-        console.log(`event: `, event);
-        switch(event.target.dataset.type) {
-            case 'text-input' : {
-                const input = new HtmlInput({text: 'My custom input'});
-                input.placeIn(container);
-            } break;
-            case 'text-area' : {
-                const textarea = new HtmlTextarea({text: 'My custom textarea'});
-                textarea.placeIn(container);
-            } break;
-            case 'text-color-input' : {
-                const input = new HtmlColorInput({text: 'My bordered input ', color: 'red'});
-                input.placeIn(container);
-                console.log(`input.value: `, input.value );
-                input.value = 'Setted New';
-            } break;
-        };
-        
-    }
+    const element = new HtmlElement({
+        id: 'div-1',
+        text: 'Inside DIV text',
+        container: container
+    });
+    element.placeIn();
+    const element2 = new HtmInput({
+        id: 'input-1',
+        text: 'Inside 222 text',
+        container: container
+    });
     
-    for (let button of buttons) {
-        button.addEventListener('click',  clickHandler);
-    }
     
+    element2.value = 'TEST_TEST';
+    console.log(` element2.text: `, element2.text);
+    
+    
+    document.getElementById('get-value')
+    .addEventListener('click', ()=>{
+        console.log(`element2.value: `, element2.value);
+    })
 
 }
 
